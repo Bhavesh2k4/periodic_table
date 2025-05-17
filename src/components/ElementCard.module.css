@@ -1,0 +1,154 @@
+.shellDisplay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.shell {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.75rem;
+  min-width: 120px;
+}
+
+.shellLabel {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 0.25rem;
+}
+
+.shellValue {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.ionization {
+  margin-bottom: 2rem;
+}
+
+.ionization h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.ionizationList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.ionizationItem {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ionizationLabel {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.ionizationValue {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Category colors */
+.alkaliMetal {
+  background: linear-gradient(135deg, #ff6666 0%, #cc3333 100%);
+}
+
+.alkalineEarthMetal {
+  background: linear-gradient(135deg, #ffdead 0%, #ffc87c 100%);
+  color: #222;
+}
+
+.transitionMetal {
+  background: linear-gradient(135deg, #ffc0c0 0%, #e9967a 100%);
+  color: #222;
+}
+
+.postTransitionMetal {
+  background: linear-gradient(135deg, #cccccc 0%, #a9a9a9 100%);
+  color: #222;
+}
+
+.metalloid {
+  background: linear-gradient(135deg, #cccc99 0%, #b8b86b 100%);
+  color: #222;
+}
+
+.nonmetal {
+  background: linear-gradient(135deg, #a1ffc3 0%, #70db93 100%);
+  color: #222;
+}
+
+.diatomicNonmetal {
+  background: linear-gradient(135deg, #a0ffa0 0%, #66cc66 100%);
+  color: #222;
+}
+
+.nobleGas {
+  background: linear-gradient(135deg, #c0ffff 0%, #89cff0 100%);
+  color: #222;
+}
+
+.lanthanide {
+  background: linear-gradient(135deg, #ffbfff 0%, #e29ae5 100%);
+  color: #222;
+}
+
+.actinide {
+  background: linear-gradient(135deg, #ff99cc 0%, #e680b1 100%);
+  color: #222;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .symbol {
+    width: 80px;
+    height: 80px;
+    font-size: 3rem;
+  }
+  
+  .name {
+    font-size: 2rem;
+  }
+  
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}
