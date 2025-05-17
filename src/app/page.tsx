@@ -1,7 +1,7 @@
 // app/page.tsx
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ElementCard from '@/components/ElementCard';
 import FilterBar from '@/components/FliterBar';
 import elementsData from '@/data/elements.json';
@@ -13,6 +13,8 @@ export default function Home() {
   const [elements, setElements] = useState<ChemicalElement[]>([]);
   const [filter, setFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [zoom, setZoom] = useState(100);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Convert elements object to array
@@ -117,6 +119,26 @@ export default function Home() {
     return '';
   };
 
+  // Zoom functions
+  const zoomIn = () => {
+    setZoom(prev => Math.min(prev + 10, 150));
+  };
+
+  const zoomOut = () => {
+    setZoom(prev => Math.max(prev - 10, 60));
+  };
+
+  const resetZoom = () => {
+    setZoom(100);
+  };
+
+  // Apply zoom style to the table
+  const tableStyle = {
+    transform: `scale(${zoom / 100})`,
+    transformOrigin: 'top center',
+    transition: 'transform 0.2s ease'
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.header}>
@@ -131,7 +153,7 @@ export default function Home() {
       </div>
       
       <div className={styles.tableContainer}>
-        <div className={styles.periodicTable}>
+        <div className={styles.periodicTable} style={tableStyle} ref={tableRef}>
           {/* Main table */}
           {periods.slice(0, 7).map(period => (
             <div key={period} className={styles.period}>
@@ -149,7 +171,6 @@ export default function Home() {
                   >
                     <div className={styles.number}>{element.number}</div>
                     <div className={styles.symbol}>{element.symbol}</div>
-                    <div className={styles.name}>{element.name}</div>
                     <div className={styles.mass}>{element.atomic_mass.toFixed(2)}</div>
                   </div>
                 ) : element ? (
@@ -180,14 +201,12 @@ export default function Home() {
                 >
                   <div className={styles.number}>{element.number}</div>
                   <div className={styles.symbol}>{element.symbol}</div>
-                  <div className={styles.name}>{element.name}</div>
                   <div className={styles.mass}>{element.atomic_mass.toFixed(2)}</div>
                 </div>
               ) : element ? (
                 <div key={element.number} className={`${styles.element} ${styles.filtered}`}>
                   <div className={styles.number}>{element.number}</div>
                   <div className={styles.symbol}>{element.symbol}</div>
-                  <div className={styles.name}>{element.name}</div>
                   <div className={styles.mass}>{element.atomic_mass.toFixed(2)}</div>
                 </div>
               ) : <div key={`lanthanide-${pos}`} className={styles.emptyCell}></div>;
@@ -210,20 +229,26 @@ export default function Home() {
                 >
                   <div className={styles.number}>{element.number}</div>
                   <div className={styles.symbol}>{element.symbol}</div>
-                  <div className={styles.name}>{element.name}</div>
                   <div className={styles.mass}>{element.atomic_mass.toFixed(2)}</div>
                 </div>
               ) : element ? (
                 <div key={element.number} className={`${styles.element} ${styles.filtered}`}>
                   <div className={styles.number}>{element.number}</div>
                   <div className={styles.symbol}>{element.symbol}</div>
-                  <div className={styles.name}>{element.name}</div>
                   <div className={styles.mass}>{element.atomic_mass.toFixed(2)}</div>
                 </div>
               ) : <div key={`actinide-${pos}`} className={styles.emptyCell}></div>;
             })}
           </div>
         </div>
+      </div>
+
+      {/* Zoom controls */}
+      <div className={styles.zoomControls}>
+        <button className={styles.zoomButton} onClick={zoomOut}>−</button>
+        <div className={styles.zoomLevel}>{zoom}%</div>
+        <button className={styles.zoomButton} onClick={zoomIn}>+</button>
+        <button className={styles.zoomButton} onClick={resetZoom}>↺</button>
       </div>
       
       {/* Element details card */}

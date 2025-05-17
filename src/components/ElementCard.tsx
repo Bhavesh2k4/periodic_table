@@ -1,44 +1,17 @@
-// components/ElementCard.tsx
-import { useEffect, useRef } from 'react';
+
 import styles from './ElementCard.module.css';
-
 import { ChemicalElement } from '../../types';
+
 const ElementCard = ({ element, onClose }: { element: ChemicalElement; onClose: () => void }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  // Close when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
-
-  // ESC key to close
-  useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscKey);
-    return () => {
-      document.removeEventListener('keydown', handleEscKey);
-    };
-  }, [onClose]);
-
   // Get category class for styling
   const getCategoryClass = () => {
     const category = element.category.toLowerCase();
     
     if (category.includes('noble gas')) return styles.nobleGas;
+    /**
+     * Checks if the click is outside the card, and if so, calls the onClose callback to close the card.
+     * @param {MouseEvent} event - The mouse event triggered by the user clicking.
+     */
     if (category.includes('alkali metal')) return styles.alkaliMetal;
     if (category.includes('alkaline earth metal')) return styles.alkalineEarthMetal;
     if (category.includes('transition metal')) return styles.transitionMetal;
@@ -52,15 +25,29 @@ const ElementCard = ({ element, onClose }: { element: ChemicalElement; onClose: 
     return '';
   };
 
+  // Handle click on the overlay background (close if clicked outside card)
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  // Close on ESC key
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
   return (
-    <div className={styles.overlay}>
-      <div className={`${styles.card} ${getCategoryClass()}`} ref={cardRef}>
-        <button className={styles.closeButton} onClick={onClose}>×</button>
+    <div className={styles.overlay} onClick={handleOverlayClick} onKeyDown={handleKeyDown} tabIndex={0}>
+      <div className={`${styles.card} ${getCategoryClass()}`}>
+        <button className={styles.closeButton} onClick={onClose} aria-label="Close">×</button>
         
         <div className={styles.header}>
-          <div className={styles.number}>{element.number}</div>
           <div className={styles.symbol}>{element.symbol}</div>
           <div className={styles.details}>
+            <div className={styles.number}>#{element.number}</div>
             <h2 className={styles.name}>{element.name}</h2>
             <p className={styles.category}>{element.category}</p>
           </div>
@@ -149,7 +136,7 @@ const ElementCard = ({ element, onClose }: { element: ChemicalElement; onClose: 
           <div className={styles.ionization}>
             <h3>Ionization Energies (kJ/mol)</h3>
             <div className={styles.ionizationList}>
-              {element.ionization_energies.map((energy, index) => (
+              {element.ionization_energies.slice(0, 8).map((energy, index) => (
                 <div key={index} className={styles.ionizationItem}>
                   <span className={styles.ionizationLabel}>{index + 1}</span>
                   <span className={styles.ionizationValue}>{energy}</span>
