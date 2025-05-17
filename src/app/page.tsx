@@ -89,15 +89,6 @@ export default function Home() {
     return elements.find(el => el.number === number);
   };
 
-  // Is this position a lanthanide element?
-  const isLanthanide = (number: number) => {
-    return number >= 57 && number <= 71;
-  };
-
-  // Is this position an actinide element?
-  const isActinide = (number: number) => {
-    return number >= 89 && number <= 103;
-  };
 
   // Get the category class for styling elements
   const getCategoryClass = (element: ChemicalElement) => {
